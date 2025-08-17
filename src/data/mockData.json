@@ -1,0 +1,57 @@
+{
+	"categories": [
+		{
+			"id": "electronics",
+			"name": "electronics",
+			"label": "Electronics",
+			"description": "Electronic devices and gadgets",
+			"color": "#3B82F6",
+			"productCount": 1
+		},
+		{
+			"id": "clothing",
+			"name": "clothing",
+			"label": "Clothing",
+			"description": "Apparel and accessories",
+			"color": "#EF4444",
+			"productCount": 1
+		},
+		{
+			"id": "books",
+			"name": "books",
+			"label": "Books",
+			"description": "Books and publications",
+			"color": "#10B981",
+			"productCount": 1
+		}
+	],
+	"products": [
+		{
+			"id": "1",
+			"name": "Wireless Headphones",
+			"description": "High-quality wireless headphones with noise cancellation",
+			"price": 199.99,
+			"stock": 50,
+			"categoryIds": ["electronics"],
+			"imageUrl": "/placeholder-dsvw3.png"
+		},
+		{
+			"id": "2",
+			"name": "Cotton T-Shirt",
+			"description": "Comfortable cotton t-shirt in various colors",
+			"price": 29.99,
+			"stock": 100,
+			"categoryIds": ["clothing"],
+			"imageUrl": "/white-cotton-t-shirt-person.png"
+		},
+		{
+			"id": "3",
+			"name": "JavaScript Handbook",
+			"description": "Complete guide to modern JavaScript development",
+			"price": 49.99,
+			"stock": 25,
+			"categoryIds": ["books"],
+			"imageUrl": "/placeholder-hue1e.png"
+		}
+	]
+}
