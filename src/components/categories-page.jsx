@@ -10,6 +10,7 @@ import {
 } from './ui/card';
 import { useFetch, useApi } from '../hooks/useApi';
 import { dataService } from '../services/dataService';
+import { ecommerceAPI } from '../services/api';
 
 const CategoriesPage = () => {
 	const {
@@ -17,12 +18,12 @@ const CategoriesPage = () => {
 		loading: categoriesLoading,
 		error: categoriesError,
 		refetch: refetchCategories,
-	} = useFetch(() => dataService.getCategories());
+	} = useFetch(() => ecommerceAPI.getCategories());
 	const {
 		data: products,
 		loading: productsLoading,
 		error: productsError,
-	} = useFetch(() => dataService.getProducts());
+	} = useFetch(() => ecommerceAPI.getProducts());
 	const { execute: executeDelete, loading: deleteLoading } = useApi();
 
 	const handleDeleteCategory = async (categoryId) => {
@@ -39,7 +40,7 @@ const CategoriesPage = () => {
 	const getCategoryProducts = (categoryId) => {
 		if (!products) return [];
 		return products.filter((product) =>
-			product.categoryIds.includes(categoryId)
+			product.categoryIds?.includes(categoryId)
 		);
 	};
 

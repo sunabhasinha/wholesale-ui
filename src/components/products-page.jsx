@@ -10,13 +10,14 @@ import {
 import { Badge } from './ui/badge';
 import { useFetch } from '../hooks/useApi';
 import { dataService } from '../services/dataService';
+import { ecommerceAPI } from '@/services/api';
 
 const ProductsPage = () => {
 	const {
 		data: products,
 		loading: productsLoading,
 		error: productsError,
-	} = useFetch(() => dataService.getProducts());
+	} = useFetch(() => ecommerceAPI.getProducts());
 	const {
 		data: categories,
 		loading: categoriesLoading,

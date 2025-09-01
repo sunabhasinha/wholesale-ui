@@ -8,13 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
-import { Checkbox } from './ui/checkbox';
 import { useFetch, useApi } from '../hooks/useApi';
 import { dataService } from '../services/dataService';
+import { ecommerceAPI } from '@/services/api';
+import CheckboxAutocomplete from './ui/autocomplete';
 
 const CreateProductPage = () => {
 	const navigate = useNavigate();
-	const { data: categories } = useFetch(() => dataService.getCategories());
+	const { data: categories } = useFetch(() => ecommerceAPI.getCategories());
 	const { execute: createProduct, loading } = useApi();
 
 	const [formData, setFormData] = useState({
@@ -24,22 +25,16 @@ const CreateProductPage = () => {
 		description: '',
 		imageUrl: '',
 		categoryIds: [],
+		sku: '',
+		label: '',
+		available: true,
 	});
 
 	const handleInputChange = (e) => {
-		const { name, value } = e.target;
+		const { name, value, type, checked } = e.target;
 		setFormData((prev) => ({
 			...prev,
-			[name]: value,
-		}));
-	};
-
-	const handleCategoryChange = (categoryId, checked) => {
-		setFormData((prev) => ({
-			...prev,
-			categoryIds: checked
-				? [...prev.categoryIds, categoryId]
-				: prev.categoryIds.filter((id) => id !== categoryId),
+			[name]: type === 'checkbox' ? checked : value,
 		}));
 	};
 
@@ -49,13 +44,16 @@ const CreateProductPage = () => {
 
 		try {
 			await createProduct(() =>
-				dataService.createProduct({
+				ecommerceAPI.createProduct({
 					name: formData.name,
 					description: formData.description,
-					price: Number.parseFloat(formData.price),
-					stock: Number.parseInt(formData.stock),
-					categoryIds: formData.categoryIds,
+					amount: Number.parseFloat(formData.price),
+					quantity: Number.parseInt(formData.stock),
+					categories: formData.categoryIds,
 					imageUrl: formData.imageUrl || undefined,
+					sku: formData.sku,
+					label: formData.label,
+					available: formData.available,
 				})
 			);
 
@@ -156,6 +154,29 @@ const CreateProductPage = () => {
 							</div>
 						</div>
 
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<div className="space-y-2">
+								<Label htmlFor="sku">SKU</Label>
+								<Input
+									id="sku"
+									name="sku"
+									placeholder="Enter SKU"
+									value={formData.sku}
+									onChange={handleInputChange}
+								/>
+							</div>
+							<div className="space-y-2">
+								<Label htmlFor="label">Label</Label>
+								<Input
+									id="label"
+									name="label"
+									placeholder="Enter label"
+									value={formData.label}
+									onChange={handleInputChange}
+								/>
+							</div>
+						</div>
+
 						<div className="space-y-2">
 							<Label htmlFor="description">Description</Label>
 							<Textarea
@@ -170,31 +191,37 @@ const CreateProductPage = () => {
 
 						<div className="space-y-3">
 							<Label>Categories</Label>
-							<div className="space-y-2">
-								{categories?.map((category) => (
-									<div
-										key={category.id}
-										className="flex items-center space-x-2"
-									>
-										<Checkbox
-											id={category.id}
-											checked={formData.categoryIds.includes(category.id)}
-											onCheckedChange={(checked) =>
-												handleCategoryChange(category.id, checked)
-											}
-										/>
-										<Label
-											htmlFor={category.id}
-											className="flex items-center gap-2"
-										>
-											<div
-												className="w-3 h-3 rounded-full"
-												style={{ backgroundColor: category.color }}
-											/>
-											{category.label}
-										</Label>
-									</div>
-								))}
+
+							<CheckboxAutocomplete
+								items={categories || []}
+								value={formData.categoryIds}
+								// Use label if available, otherwise name
+								getLabel={(item) => item.label || item.name}
+								getColor={(item) => item.color}
+								onChange={(selected) => {
+									// selected comes as [{ id }]
+									const ids = selected.map((c) => c.id);
+									setFormData((prev) => ({ ...prev, categoryIds: ids }));
+								}}
+							/>
+
+							{/* If you need the exact payload shape elsewhere:
+								const categoriesPayload = (formData.categoryIds || []).map(id => ({ id }));
+							*/}
+						</div>
+
+						<div className="space-y-2">
+							<Label htmlFor="available">Available</Label>
+							<div>
+								<input
+									type="checkbox"
+									id="available"
+									name="available"
+									checked={formData.available}
+									onChange={handleInputChange}
+									className="mr-2"
+								/>
+								<span>{formData.available ? 'Yes' : 'No'}</span>
 							</div>
 						</div>
 

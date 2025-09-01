@@ -2,7 +2,9 @@ import axios from 'axios';
 
 // Create axios instance with base configuration
 const api = axios.create({
-	baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api',
+	baseURL:
+		// process.env.REACT_APP_API_BASE_URL ||
+		'https://gvmlqb6f92.execute-api.ap-south-1.amazonaws.com/dev',
 	timeout: 10000,
 	headers: {
 		'Content-Type': 'application/json',
@@ -13,10 +15,10 @@ const api = axios.create({
 api.interceptors.request.use(
 	(config) => {
 		// Add auth token if available
-		const token = localStorage.getItem('authToken');
-		if (token) {
-			config.headers.Authorization = `Bearer ${token}`;
-		}
+		// const token = localStorage.getItem('authToken') || '';
+		// if (token) {
+		// 	config.headers.Authorization = `Bearer ${token}`;
+		// }
 
 		// Add request timestamp
 		config.metadata = { startTime: new Date() };
@@ -125,17 +127,26 @@ export const apiService = {
 // Specific API endpoints for the ecommerce app
 export const ecommerceAPI = {
 	// Categories
-	getCategories: () => apiService.get('/categories'),
+	getCategories: () =>
+		apiService.get('/entity/5ab84f02-6253-4606-a979-267b4c2f635e/category'),
 	createCategory: (categoryData) =>
-		apiService.post('/categories', categoryData),
+		apiService.post(
+			'/entity/5ab84f02-6253-4606-a979-267b4c2f635e/category',
+			categoryData
+		),
 	updateCategory: (id, categoryData) =>
 		apiService.put(`/categories/${id}`, categoryData),
 	deleteCategory: (id) => apiService.delete(`/categories/${id}`),
 
 	// Products
-	getProducts: (params) => apiService.get('/products', params),
+	getProducts: (params) =>
+		apiService.get('/entity/5ab84f02-6253-4606-a979-267b4c2f635e/item', params),
 	getProduct: (id) => apiService.get(`/products/${id}`),
-	createProduct: (productData) => apiService.post('/products', productData),
+	createProduct: (productData) =>
+		apiService.post(
+			'/entity/5ab84f02-6253-4606-a979-267b4c2f635e/item',
+			productData
+		),
 	updateProduct: (id, productData) =>
 		apiService.put(`/products/${id}`, productData),
 	deleteProduct: (id) => apiService.delete(`/products/${id}`),

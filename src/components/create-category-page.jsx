@@ -9,7 +9,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { useApi } from '../hooks/useApi';
-import { dataService } from '../services/dataService';
+import { ecommerceAPI } from '../services/api';
 
 const CreateCategoryPage = () => {
 	const navigate = useNavigate();
@@ -53,14 +53,15 @@ const CreateCategoryPage = () => {
 		if (!formData.label.trim()) return;
 
 		try {
-			await executeCreate(() =>
-				dataService.createCategory({
+			await executeCreate(() => {
+				console.log('formData', formData);
+				ecommerceAPI.createCategory({
 					label: formData.label,
 					name: formData.name,
 					description: formData.description,
 					color: formData.color,
-				})
-			);
+				});
+			});
 
 			navigate('/categories');
 		} catch (error) {
