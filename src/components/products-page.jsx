@@ -1,16 +1,8 @@
-import { Eye, ShoppingCart } from 'lucide-react';
-import { Button } from './ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from './ui/card';
-import { Badge } from './ui/badge';
+'use client';
+import React from 'react';
 import { useFetch } from '../hooks/useApi';
-import { dataService } from '../services/dataService';
 import { ecommerceAPI } from '@/services/api';
+import DataTable from '../components/ui/dataTable';
 
 const ProductsPage = () => {
 	const {
@@ -18,44 +10,35 @@ const ProductsPage = () => {
 		loading: productsLoading,
 		error: productsError,
 	} = useFetch(() => ecommerceAPI.getProducts());
-	const {
-		data: categories,
-		loading: categoriesLoading,
-		error: categoriesError,
-	} = useFetch(() => dataService.getCategories());
 
-	const getCategoryById = (categoryId) => {
-		return categories?.find((cat) => cat.id === categoryId);
-	};
+	const [page, setPage] = React.useState(1);
+	const [pageSize, setPageSize] = React.useState(10);
 
-	const loading = productsLoading || categoriesLoading;
-	const error = productsError || categoriesError;
+	const total = products?.length ?? 0;
+	const start = (page - 1) * pageSize;
+	const currentRows = products?.slice(start, start + pageSize) ?? [];
 
-	if (loading) {
+	if (productsLoading) {
 		return (
-			<div className="space-y-6">
-				<div className="flex items-center justify-between">
-					<div>
-						<h1 className="text-3xl font-bold tracking-tight">Products</h1>
-						<p className="text-muted-foreground">Loading products...</p>
-					</div>
-				</div>
+			<div className="flex items-center justify-center h-64">
+				Loading products...
 			</div>
 		);
 	}
 
-	if (error) {
+	if (productsError) {
 		return (
-			<div className="space-y-6">
-				<div className="flex items-center justify-between">
-					<div>
-						<h1 className="text-3xl font-bold tracking-tight">Products</h1>
-						<p className="text-destructive">Error: {error}</p>
-					</div>
-				</div>
+			<div className="flex items-center justify-center h-64 text-red-500">
+				Error: {productsError}
 			</div>
 		);
 	}
+
+	const columns = [
+		{ key: 'name', header: 'Product', align: 'left' },
+		{ key: 'amount', header: 'Price ($)', align: 'left' },
+		{ key: 'quantity', header: 'Quantity', align: 'left' },
+	];
 
 	return (
 		<div className="space-y-6">
@@ -66,77 +49,25 @@ const ProductsPage = () => {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-				{products?.map((product) => (
-					<Card key={product.id} className="overflow-hidden">
-						<div className="aspect-video bg-muted relative overflow-hidden">
-							{product.imageUrl ? (
-								<img
-									src={product.imageUrl || '/placeholder.svg'}
-									alt={product.name}
-									className="w-full h-full object-cover"
-								/>
-							) : (
-								<div className="w-full h-full flex items-center justify-center bg-muted">
-									<span className="text-muted-foreground">No image</span>
-								</div>
-							)}
-						</div>
-						<CardHeader className="pb-3">
-							<CardTitle className="text-lg">{product.name}</CardTitle>
-							<CardDescription className="line-clamp-2">
-								{product.description}
-							</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<div className="space-y-3">
-								<div className="flex flex-wrap gap-1">
-									{product.categoryIds.map((categoryId) => {
-										const category = getCategoryById(categoryId);
-										return category ? (
-											<Badge
-												key={categoryId}
-												variant="secondary"
-												style={{
-													backgroundColor: category.color + '20',
-													color: category.color,
-													borderColor: category.color + '40',
-												}}
-											>
-												{category.label}
-											</Badge>
-										) : null;
-									})}
-								</div>
-
-								<div className="flex items-center justify-between">
-									<div>
-										<p className="text-2xl font-bold">${product.price}</p>
-										<p className="text-sm text-muted-foreground">
-											Stock: {product.stock}
-										</p>
-									</div>
-								</div>
-
-								<div className="flex items-center gap-2 pt-2">
-									<Button
-										variant="outline"
-										size="sm"
-										className="flex-1 bg-transparent"
-									>
-										<Eye className="h-4 w-4 mr-2" />
-										View
-									</Button>
-									<Button size="sm" className="flex-1">
-										<ShoppingCart className="h-4 w-4 mr-2" />
-										Add to Cart
-									</Button>
-								</div>
-							</div>
-						</CardContent>
-					</Card>
-				))}
-			</div>
+			<DataTable
+				columns={columns}
+				data={currentRows}
+				getRowKey={(row) => row.id}
+				leadingIconColumnKey="name"
+				iconKey="icon"
+				colorKey="color"
+				emptyLabel="No products found"
+				pagination={{
+					page,
+					pageSize,
+					total,
+					onPageChange: setPage,
+					onPageSizeChange: (size) => {
+						setPageSize(size);
+						setPage(1);
+					},
+				}}
+			/>
 		</div>
 	);
 };
