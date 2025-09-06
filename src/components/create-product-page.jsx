@@ -9,9 +9,9 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { useFetch, useApi } from '../hooks/useApi';
-import { dataService } from '../services/dataService';
 import { ecommerceAPI } from '@/services/api';
 import CheckboxAutocomplete from './ui/autocomplete';
+import ImageUpload from './image-upload';
 
 const CreateProductPage = () => {
 	const navigate = useNavigate();
@@ -36,6 +36,15 @@ const CreateProductPage = () => {
 			...prev,
 			[name]: type === 'checkbox' ? checked : value,
 		}));
+	};
+
+	const handleImageUploaded = async (presignedData) => {
+		console.log('presignedData', presignedData);
+		// const { data: presignedData } = await ecommerceAPI.getPresignedUrl({
+		// 	fileName,
+		// });
+		// console.log('presignedData', presignedData);
+		// Upload the file to the presigned URL
 	};
 
 	const handleSubmit = async (e) => {
@@ -107,17 +116,16 @@ const CreateProductPage = () => {
 							</div>
 
 							<div className="space-y-2">
-								<Label htmlFor="imageUrl">Image URL</Label>
-								<Input
-									id="imageUrl"
-									name="imageUrl"
-									placeholder="https://example.com/image.jpg"
-									value={formData.imageUrl}
-									onChange={handleInputChange}
+								<Label>Product Image</Label>
+								<ImageUpload
+									onImageUploaded={handleImageUploaded}
+									currentImageUrl={formData.imageUrl}
 								/>
-								<p className="text-xs text-muted-foreground">
-									Leave empty to use a default image
-								</p>
+								{formData.imageUrl && (
+									<p className="text-xs text-muted-foreground">
+										Selected: {formData.imageUrl}
+									</p>
+								)}
 							</div>
 						</div>
 
