@@ -147,6 +147,12 @@ export const ecommerceAPI = {
 			'/entity/5ab84f02-6253-4606-a979-267b4c2f635e/item',
 			productData
 		),
+	getPresignedUrl: (payload) => {
+		return apiService.post(
+			'/entity/5ab84f02-6253-4606-a979-267b4c2f635e/image/upload',
+			payload
+		);
+	},
 	updateProduct: (id, productData) =>
 		apiService.put(`/products/${id}`, productData),
 	deleteProduct: (id) => apiService.delete(`/products/${id}`),
