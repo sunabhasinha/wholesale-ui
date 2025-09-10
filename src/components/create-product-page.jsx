@@ -23,7 +23,7 @@ const CreateProductPage = () => {
 		price: '',
 		stock: '',
 		description: '',
-		imageUrl: '',
+		imageIds: '',
 		categoryIds: [],
 		sku: '',
 		label: '',
@@ -40,6 +40,11 @@ const CreateProductPage = () => {
 
 	const handleImageUploaded = async (presignedData) => {
 		console.log('presignedData', presignedData);
+		setFormData((prev) => ({
+			...prev,
+			imageIds: [presignedData.imageUuid],
+		}));
+
 		// const { data: presignedData } = await ecommerceAPI.getPresignedUrl({
 		// 	fileName,
 		// });
@@ -59,7 +64,7 @@ const CreateProductPage = () => {
 					amount: Number.parseFloat(formData.price),
 					quantity: Number.parseInt(formData.stock),
 					categories: (formData.categoryIds || []).map((id) => ({ id })),
-					// imageUrl: formData.imageUrl || undefined,
+					images: (formData.imageIds || []).map((id) => ({ id })),
 					sku: formData.sku,
 					label: formData.label,
 					available: formData.available,

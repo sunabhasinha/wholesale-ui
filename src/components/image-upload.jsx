@@ -90,10 +90,10 @@ const ImageUpload = ({ onImageUploaded, currentImageUrl }) => {
 			// Here you would typically upload to the presigned URL
 			// For now, we'll simulate success and pass the filename back
 			console.log('Presigned URL response:', response);
-			setPreAssignedData(response.data);
+			setPreAssignedData(response);
 
 			// Simulate upload success
-			onImageUploaded(preAssignedData);
+			onImageUploaded(response);
 			setShowPreview(false);
 			setSelectedFile(null);
 			setPreviewUrl(null);
