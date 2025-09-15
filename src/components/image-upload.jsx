@@ -92,6 +92,7 @@ const ImageUpload = ({ onImageUploaded, currentImageUrl }) => {
 			console.log('Presigned URL response:', response);
 			setPreAssignedData(response);
 
+			handleImageUploadToServer(response);
 			// Simulate upload success
 			onImageUploaded(response);
 			setShowPreview(false);
@@ -102,6 +103,49 @@ const ImageUpload = ({ onImageUploaded, currentImageUrl }) => {
 			alert('Upload failed. Please try again.');
 		} finally {
 			setUploading(false);
+		}
+	};
+
+	const handleImageUploadToServer = async (presignedData) => {
+		console.log('presignedData in image upload', presignedData);
+		const details = presignedData.presignedDetails;
+		if (!details || !details.jsonFields) return;
+		try {
+			const formData = new FormData();
+
+			// get file type
+			const fileType = selectedFile.type.split('/')[1]; // e.g., "jpeg", "png"
+			if (fileType) {
+				formData.append('Content-Type', fileType);
+			}
+
+			// jsonFields is a string, so parse it first
+			let jsonFieldsObj = {};
+			try {
+				jsonFieldsObj = JSON.parse(details.jsonFields);
+			} catch (e) {
+				console.error('Failed to parse jsonFields:', details.jsonFields, e);
+			}
+
+			Object.keys(jsonFieldsObj).forEach((prop) => {
+				formData.append(prop, jsonFieldsObj[prop]);
+			});
+
+			// Create a blob from the selected image and append it to formData
+			formData.append('file', selectedFile);
+			// You can now use formData to upload the image to the presigned URL
+			await fetch(details.url, {
+				method: 'POST',
+				body: formData,
+			}).then((res) => {
+				if (!res.ok) {
+					throw new Error('Failed to upload image to server');
+				}
+				console.log('Image uploaded successfully to server');
+				return res;
+			});
+		} catch (error) {
+			console.error('Failed to upload image to server:', error);
 		}
 	};
 
