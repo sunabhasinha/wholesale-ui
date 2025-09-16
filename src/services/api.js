@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 // Create axios instance with base configuration
+console.log('****', import.meta.env);
+
 const api = axios.create({
 	baseURL: import.meta.env.VITE_WS_BASE_URL,
 	timeout: 20000,
