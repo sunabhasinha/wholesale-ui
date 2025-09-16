@@ -3,6 +3,7 @@ import React from 'react';
 import { useFetch } from '../hooks/useApi';
 import { ecommerceAPI } from '@/services/api';
 import DataTable from '../components/ui/dataTable';
+import AvatarBadge from './ui/avatar-badge';
 
 const ProductsPage = () => {
 	const {
@@ -35,7 +36,33 @@ const ProductsPage = () => {
 	}
 
 	const columns = [
-		{ key: 'name', header: 'Product', align: 'left' },
+		{
+			key: 'name',
+			header: 'Product',
+			align: 'left',
+			render: (row) => {
+				const images = row.images || [];
+				let thumbUrl = null;
+				if (images.length > 0 && images[0].sizes) {
+					const thumb = images[0].sizes.find((s) => s.size === 'THUMBNAIL');
+					if (thumb) thumbUrl = thumb.url;
+				}
+				return (
+					<div className="flex items-center gap-3">
+						{thumbUrl ? (
+							<img
+								src={thumbUrl}
+								alt={row.name}
+								className="w-10 h-10 object-cover rounded-lg border"
+							/>
+						) : (
+							<AvatarBadge name={row.name} />
+						)}
+						<span className="font-medium text-gray-900">{row.name}</span>
+					</div>
+				);
+			},
+		},
 		{ key: 'amount', header: 'Price ($)', align: 'left' },
 		{ key: 'quantity', header: 'Quantity', align: 'left' },
 	];

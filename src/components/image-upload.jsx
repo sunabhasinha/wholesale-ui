@@ -114,10 +114,10 @@ const ImageUpload = ({ onImageUploaded, currentImageUrl }) => {
 			const formData = new FormData();
 
 			// get file type
-			const fileType = selectedFile.type.split('/')[1]; // e.g., "jpeg", "png"
-			if (fileType) {
-				formData.append('Content-Type', fileType);
-			}
+			// const fileType = selectedFile.type.split('/')[1]; // e.g., "jpeg", "png"
+			// if (fileType) {
+			formData.append('Content-Type', 'image/png');
+			// }
 
 			// jsonFields is a string, so parse it first
 			let jsonFieldsObj = {};
