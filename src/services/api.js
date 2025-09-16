@@ -2,9 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with base configuration
 const api = axios.create({
-	baseURL:
-		// process.env.REACT_APP_API_BASE_URL ||
-		'https://gvmlqb6f92.execute-api.ap-south-1.amazonaws.com/dev',
+	baseURL: import.meta.env.VITE_WS_BASE_URL,
 	timeout: 20000,
 	headers: {
 		'Content-Type': 'application/json',
