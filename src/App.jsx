@@ -22,7 +22,7 @@ function App() {
 			<Router>
 				<AdminLayout>
 					<Routes>
-						<Route path="/" element={<Navigate to="/categories" replace />} />
+						<Route path="/" element={<Navigate to="/" replace />} />
 						<Route path="/categories" element={<CategoriesPage />} />
 						<Route path="/categories/create" element={<CreateCategoryPage />} />
 						<Route path="/products" element={<ProductsPage />} />
