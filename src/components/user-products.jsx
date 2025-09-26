@@ -59,7 +59,7 @@ export default function UserProductsPage() {
 
 			{/* Products Grid */}
 			<div className="grid gap-6 mb-8 md:grid-cols-2 lg:grid-cols-3">
-				{userProducts.map((product) => (
+				{currentRows.map((product) => (
 					<Card key={product.id} className="overflow-hidden">
 						<div className="flex flex-col">
 							{/* Image at Top */}
