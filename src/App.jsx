@@ -24,7 +24,7 @@ function App() {
 				<AdminLayout>
 					<Routes>
 						{/* Admin Controls */}
-						<Route path="/" element={<Navigate to="/categories" replace />} />
+						<Route path="/" element={<Navigate to="/user/product" replace />} />
 						<Route path="/categories" element={<CategoriesPage />} />
 						<Route path="/categories/create" element={<CreateCategoryPage />} />
 						<Route path="/products" element={<ProductsPage />} />
