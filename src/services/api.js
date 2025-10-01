@@ -141,7 +141,7 @@ export const ecommerceAPI = {
 	// Products
 	getProducts: (params) =>
 		apiService.get('/entity/5ab84f02-6253-4606-a979-267b4c2f635e/item', params),
-	getProduct: (id) => apiService.get(`/products/${id}`),
+	getProduct: (id) => apiService.get(`/entity/5ab84f02-6253-4606-a979-267b4c2f635e/item/${id}`),
 	createProduct: (productData) =>
 		apiService.post(
 			'/entity/5ab84f02-6253-4606-a979-267b4c2f635e/item',

@@ -53,5 +53,18 @@
 			"categoryIds": ["books"],
 			"imageUrl": "/placeholder-hue1e.png"
 		}
-	]
+	],
+	"cart": {
+		"id": "cart1",
+		"items": [
+			{
+				"productId": "12345",
+				"quantity": 2
+			},
+			{
+				"productId": "3",
+				"quantity": 1
+			}
+		]
+	}
 }

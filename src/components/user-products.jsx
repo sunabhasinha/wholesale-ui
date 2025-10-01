@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import Pagination from '../components/ui/pagination';
 import { useFetch } from '@/hooks/useApi';
 import { ecommerceAPI } from '@/services/api';
 
@@ -15,6 +15,8 @@ export default function UserProductsPage() {
 		error: userProductsError,
 	} = useFetch(() => ecommerceAPI.getProducts());
 
+	const navigate = useNavigate();
+
 	// Calculate pagination
 	const [page, setPage] = React.useState(1);
 	const [pageSize, setPageSize] = React.useState(10);
@@ -24,11 +26,13 @@ export default function UserProductsPage() {
 	const currentRows = userProducts?.slice(start, start + pageSize) ?? [];
 	const handleAddToCart = (product) => {
 		console.log('Adding to cart:', product.name);
+		alert(`coming soon`);
 		// Add your cart logic here
 	};
 
 	const handleBuyNow = (product) => {
 		console.log('Buy now:', product.name);
+		alert(`coming soon`);
 		// Add your buy now logic here
 	};
 
@@ -60,7 +64,7 @@ export default function UserProductsPage() {
 			{/* Products Grid */}
 			<div className="grid gap-6 mb-8 md:grid-cols-2 lg:grid-cols-3">
 				{currentRows.map((product) => (
-					<Card key={product.id} className="overflow-hidden">
+					<Card key={product.id} className="overflow-hidden" onClick={() => navigate(`/product/${product.id}`)}>
 						<div className="flex flex-col">
 							{/* Image at Top */}
 							<div className="aspect-square">

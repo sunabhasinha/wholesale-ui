@@ -21,7 +21,7 @@ import { Input } from './ui/input';
 import ThemeToggle from './theme-toggle';
 
 const AdminLayout = ({ children }) => {
-	const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+	const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 	const [productsExpanded, setProductsExpanded] = useState(true);
 	const [categoriesExpanded, setCategoriesExpanded] = useState(true);
 	const location = useLocation();
@@ -51,7 +51,7 @@ const AdminLayout = ({ children }) => {
 						</button>
 						{!sidebarCollapsed && (
 							<h1 className="font-semibold text-sidebar-foreground">
-								E-Commerce
+								AK Plastics
 							</h1>
 						)}
 					</div>
