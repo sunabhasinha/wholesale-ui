@@ -4,20 +4,19 @@ import { Button } from "@/components/ui/button"
 import { BagIcon } from "@/components/icons/bag-icon"
 import { getCookie } from "@/lib/get-cookie"
 
-import { getProduct } from "@/pages/product/product"
 import { cartService } from "@/services/cartService"
 import { COOKIE_CART_ID } from "../../constants/index"
 import { useAddProductStore } from "@/hooks/useAddProductStore"
 import { useCartStore } from "@/hooks/useCartStore"
+
 export async function getItemAvailability({
   cartId,
-  productId,
+  product,
 }) {
 
   if (!cartId) {
-    const product = getProduct(productId)
     const inStockQuantity =
-      product?.quantityAvailable ?? Number.POSITIVE_INFINITY
+      product?.quantity ?? Number.POSITIVE_INFINITY
     return {
       inCartQuantity: 0,
       inStockQuantity,
@@ -76,7 +75,7 @@ const AddToCartButton = ({
       const cartId = getCookie(COOKIE_CART_ID)
       const itemAvailability = await getItemAvailability({
         cartId,
-        productId: product.id,
+        product,
       })
       itemAvailability && setHasAnyAvailable(itemAvailability.inCartQuantity < (product?.quantity || 0))
     }

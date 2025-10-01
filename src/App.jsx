@@ -15,6 +15,7 @@ import ProductsPage from './components/products-page';
 import CreateProductPage from './components/create-product-page';
 import UserProductsPage from './components/user-products';
 import Login, { STATIC_USER, STATIC_PASS }  from './components/auth/login';
+import ProductDetailPage from './pages/product/product';
 
 function ProtectedRoute({ isLoggedIn, children }) {
     const location = useLocation();
@@ -74,6 +75,7 @@ function App() {
                                         <Route path="/products" element={<ProductsPage />} />
                                         <Route path="/products/create" element={<CreateProductPage />} />
                                         <Route path="/user/product" element={<UserProductsPage />} />
+                                        <Route path="/product/:productId" element={<ProductDetailPage />} />
                                     </Routes>
                                 </AdminLayout>
                             </ProtectedRoute>

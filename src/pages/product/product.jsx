@@ -47,12 +47,12 @@ const ProductDetailPage = () => {
       loading: productLoading,
       error: productsError,
     } = useFetch(() => ecommerceAPI.getProduct(productId));
-
+      console.log("Product details:", product);
     
 	if (productLoading) {
 		return (
 			<div className="flex items-center justify-center h-64">
-				Loading products...
+				Loading product...
 			</div>
 		);
 	}
