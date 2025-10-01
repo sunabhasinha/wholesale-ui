@@ -168,6 +168,21 @@ const AdminLayout = ({ children }) => {
 							</div>
 							{!sidebarCollapsed && <ChevronRight className="h-4 w-4" />}
 						</button>
+						{!sidebarCollapsed && (
+							<div className="ml-6 mt-1 space-y-1">
+								<Link
+									to="/user/product"
+									className={`flex items-center gap-2 p-2 text-sm rounded-md transition-colors ${
+										isActive('/user-products')
+											? 'bg-sidebar-primary text-sidebar-primary-foreground'
+											: 'text-sidebar-foreground hover:bg-sidebar-accent'
+									}`}
+								>
+									<List className="h-4 w-4" />
+									User Products
+								</Link>
+							</div>
+						)}
 					</div>
 				</nav>
 			</div>

@@ -1,16 +1,18 @@
 import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-	Navigate,
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Navigate,
+    useLocation,
 } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+
 import { ThemeProvider } from './components/theme-provider';
 import AdminLayout from './components/admin-layout';
 import CategoriesPage from './components/categories-page';
 import CreateCategoryPage from './components/create-category-page';
 import ProductsPage from './components/products-page';
 import CreateProductPage from './components/create-product-page';
-import ProductDetailPage from './pages/product/product';
 import UserProductsPage from './components/user-products';
 import Login, { STATIC_USER, STATIC_PASS }  from './components/auth/login';
 
@@ -71,7 +73,6 @@ function App() {
                                         <Route path="/categories/create" element={<CreateCategoryPage />} />
                                         <Route path="/products" element={<ProductsPage />} />
                                         <Route path="/products/create" element={<CreateProductPage />} />
-                                        <Route path="/product/:productId" element={<ProductDetailPage />} />
                                         <Route path="/user/product" element={<UserProductsPage />} />
                                     </Routes>
                                 </AdminLayout>
