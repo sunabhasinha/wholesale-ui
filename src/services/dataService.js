@@ -1,4 +1,4 @@
-import mockData from '../data/mockData.json';
+import { products, categories } from '../data/mockData.js';
 
 // Simulate API delay
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -8,12 +8,12 @@ export const dataService = {
 	// Categories
 	async getCategories() {
 		await delay(500); // Simulate network delay
-		return mockData.categories;
+		return categories;
 	},
 
 	async getCategoryById(id) {
 		await delay(300);
-		const category = mockData.categories.find((cat) => cat.id === id);
+		const category = categories.find((cat) => cat.id === id);
 		if (!category) throw new Error('Category not found');
 		return category;
 	},
@@ -44,12 +44,12 @@ export const dataService = {
 	// Products
 	async getProducts() {
 		await delay(700);
-		return mockData.products;
+		return products;
 	},
 
 	async getProductById(id) {
 		await delay(300);
-		const product = mockData.products.find((prod) => prod.id === id);
+		const product = products.find((prod) => prod.id === id);
 		if (!product) throw new Error('Product not found');
 		return product;
 	},

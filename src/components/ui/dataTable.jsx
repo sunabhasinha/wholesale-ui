@@ -7,9 +7,9 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from '../ui/table';
-import Pagination from '../ui/pagination';
-import AvatarBadge from '../ui/avatar-badge';
+} from './table';
+import Pagination from './pagination';
+import AvatarBadge from './avatar-badge';
 
 export default function DataTable({
 	// data & columns
